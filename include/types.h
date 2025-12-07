@@ -3,12 +3,26 @@
 
 #include <stdint.h>
 
-typedef int ultk_backend_return;
-typedef int ultk_screen_coord;
-typedef enum {
+typedef int    ultk_backend_return_t;
+typedef int    ultk_screen_coord_t;
+typedef enum   ultk_color_index ultk_color_index_t;
+typedef enum   ultk_input_event_type ultk_input_event_type_t;
+typedef union  ultk_color_rgb ultk_color_rgb_t;
+typedef struct ultk_input_state ultk_input_state_t;
+typedef struct ultk_input_event ultk_input_event_t;
+
+enum ultk_color_index {
     ULTK_COLOR_BACKGROUND
-} ultk_color_index;
-typedef union {
+};
+
+enum ultk_input_event_type {
+    ULTK_INPUT_EVENT_KEY_PRESS,
+    ULTK_INPUT_EVENT_KEY_RELEASE,
+    ULTK_INPUT_EVENT_MOUSE_MOVEMENT,
+    ULTK_INPUT_EVENT_MOUSE_BUTTON
+};
+
+union ultk_color_rgb {
     struct {
         uint8_t r;
         uint8_t g;
@@ -16,6 +30,16 @@ typedef union {
         uint8_t a;
     };
     uint32_t rgba;
-} ultk_color_rgb;
+};
+
+struct ultk_input_state {
+    unsigned int num_events;
+    ultk_input_event_t *events;
+};
+
+struct ultk_input_event {
+    ultk_input_event_type_t event_type;
+    //add stuff here
+};
 
 #endif
