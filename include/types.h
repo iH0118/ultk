@@ -7,7 +7,7 @@ typedef int                        ultk_return_t;
 typedef unsigned int               ultk_screen_coord_t;
 typedef enum ultk_color_index      ultk_color_index_t;
 typedef enum ultk_input_event_type ultk_input_event_type_t;
-typedef union ultk_color_rgb       ultk_color_rgb_t;
+typedef union ultk_color_rgba      ultk_color_rgba_t;
 typedef struct ultk_input_state    ultk_input_state_t;
 typedef struct ultk_input_event    ultk_input_event_t;
 
@@ -23,7 +23,7 @@ enum ultk_input_event_type {
     ULTK_INPUT_EVENT_MOUSE_BUTTON
 };
 
-union ultk_color_rgb {
+union ultk_color_rgba {
     struct {
         uint8_t r;
         uint8_t g;
