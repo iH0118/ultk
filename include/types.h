@@ -4,7 +4,7 @@
 #include <stdint.h>
 
 typedef int                        ultk_return_t;
-typedef int                        ultk_screen_coord_t;
+typedef unsigned int               ultk_screen_coord_t;
 typedef enum ultk_color_index      ultk_color_index_t;
 typedef enum ultk_input_event_type ultk_input_event_type_t;
 typedef union ultk_color_rgb       ultk_color_rgb_t;

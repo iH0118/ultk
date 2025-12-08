@@ -28,7 +28,7 @@ ultk_backend_query_input (
 
 ultk_return_t
 ultk_backend_register_callbacks (
-    ultk_return_t (*window_resize_callback)(int, int)
+    ultk_return_t (*window_resize_callback)(unsigned int, unsigned int)
 );
 
 #endif
