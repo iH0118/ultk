@@ -10,9 +10,8 @@ ultk_backend_initialize_canvas (
     ultk_screen_coord_t   requested_size_y,
     ultk_screen_coord_t  *canvas_size_x,
     ultk_screen_coord_t  *canvas_size_y,
-    ultk_color_index_t    background_index,
-    ultk_color_rgba_t     background_rgba,
-    ultk_return_t       (*canvas_resize_callback)(unsigned int, unsigned int)
+    ultk_color_index_t    color_fill_index,
+    ultk_color_rgba_t     color_fill_rgba
 );
 
 ultk_return_t
