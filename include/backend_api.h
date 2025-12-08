@@ -3,7 +3,7 @@
 
 #include <types.h>
 
-ultk_backend_return_t
+ultk_return_t
 ultk_backend_draw_pixel (
     ultk_screen_coord_t x,
     ultk_screen_coord_t y,
@@ -11,7 +11,7 @@ ultk_backend_draw_pixel (
     ultk_color_rgb_t    color_rgb
 );
 
-ultk_backend_return_t
+ultk_return_t
 ultk_backend_draw_line (
     ultk_screen_coord_t start_x,
     ultk_screen_coord_t start_y,
@@ -21,9 +21,14 @@ ultk_backend_draw_line (
     ultk_color_rgb_t    color_rgb
 );
 
-ultk_backend_return_t
-ultk_backend_get_input (
+ultk_return_t
+ultk_backend_query_input (
     ultk_input_state_t *input_state
+);
+
+ultk_return_t
+ultk_backend_register_callbacks (
+    ultk_return_t (*window_resize_callback)(int, int)
 );
 
 #endif
