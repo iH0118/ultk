@@ -67,3 +67,34 @@ ultk_backend_destroy_canvas (
 
     return ULTK_SUCCESS;
 }
+
+ultk_return_t
+ultk_backend_clear_canvas (
+    ultk_canvas_id_t canvas_id
+)
+{
+    if (canvas_id >= _ULTK_BACKEND_MAX_CANVAS_COUNT)
+    {
+        return ULTK_BACKEND_ERROR_CANVAS_INDEX_OUT_OF_RANGE;
+    }
+
+    if (!canvas_index[canvas_id].window)
+    {
+        return ULTK_BACKEND_ERROR_CANVAS_DOESNT_EXIST;
+    }
+
+    if (!SDL_SetRenderDrawColor(
+            canvas_index[canvas_id].renderer,
+            canvas_index[canvas_id].color_fill.r,
+            canvas_index[canvas_id].color_fill.g,
+            canvas_index[canvas_id].color_fill.b,
+            canvas_index[canvas_id].color_fill.a
+        ) ||
+        !SDL_RenderClear(canvas_index[canvas_id].renderer)
+    )
+    {
+        return ULTK_BACKEND_ERROR_RENDER_ERROR;
+    }
+
+    return ULTK_SUCCESS;
+}

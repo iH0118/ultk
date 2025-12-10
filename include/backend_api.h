@@ -29,12 +29,17 @@ ultk_backend_destroy_canvas (
 );
 
 ultk_return_t
+ultk_backend_clear_canvas (
+    ultk_canvas_id_t canvas_id
+);
+
+ultk_return_t
 ultk_backend_draw_pixel (
     ultk_canvas_id_t    canvas_id,
     ultk_screen_coord_t x,
     ultk_screen_coord_t y,
     ultk_color_index_t  color_index,
-    ultk_color_rgba_t   color_rgb
+    ultk_color_rgba_t   color_rgba
 );
 
 ultk_return_t
