@@ -1,5 +1,5 @@
-#ifndef ULTK_CANVAS_H
-#define ULTK_CANVAS_H
+#ifndef _ULTK_CANVAS_H
+#define _ULTK_CANVAS_H
 
 #include <types.h>
 

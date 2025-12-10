@@ -1,5 +1,5 @@
-#ifndef ULTK_H
-#define ULTK_H
+#ifndef _ULTK_H
+#define _ULTK_H
 
 #include <types.h>
 

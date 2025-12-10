@@ -1,11 +1,11 @@
-#ifndef ULTK_TYPES_H
-#define ULTK_TYPES_H
+#ifndef _ULTK_TYPES_H
+#define _ULTK_TYPES_H
 
 #include <stdint.h>
 
-typedef int                        ultk_return_t;
-typedef unsigned int               ultk_screen_coord_t;
-typedef unsigned int               ultk_canvas_id_t;
+typedef int                        ultk_screen_coord_t;
+typedef int                        ultk_canvas_id_t;
+typedef enum ultk_return           ultk_return_t;
 typedef enum ultk_color_index      ultk_color_index_t;
 typedef enum ultk_widget_type      ultk_widget_type_t;
 typedef enum ultk_input_event_type ultk_input_event_type_t;
@@ -14,6 +14,18 @@ typedef struct ultk_canvas         ultk_canvas_t;
 typedef struct ultk_widget         ultk_widget_t;
 typedef struct ultk_input_state    ultk_input_state_t;
 typedef struct ultk_input_event    ultk_input_event_t;
+
+enum ultk_return {
+    ULTK_SUCCESS                                 =  0,
+    ULTK_ERROR_UNSPECIFIED                       = -1,
+    ULTK_BACKEND_ERROR_UNSPECIFIED               = -1001,
+    ULTK_BACKEND_ERROR_INIT_ERROR                = -1002,
+    ULTK_BACKEND_ERROR_NOT_INITIALIZED           = -1003,
+    ULTK_BACKEND_ERROR_MAX_CANVAS_COUNT_REACHED  = -1004,
+    ULTK_BACKEND_ERROR_CANVAS_INDEX_OUT_OF_RANGE = -1005,
+    ULTK_BACKEND_ERROR_CANVAS_CREATION_ERROR     = -1006,
+    ULTK_BACKEND_ERROR_CANVAS_DOESNT_EXIST       = -1007
+};
 
 enum ultk_color_index {
     ULTK_COLOR_BACKGROUND,
