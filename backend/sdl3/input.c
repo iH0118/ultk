@@ -1,8 +1,4 @@
 #include "backend.h"
-#include "backend_api.h"
-#include "types.h"
-#include <SDL3/SDL_events.h>
-#include <SDL3/SDL_video.h>
 
 ultk_canvas_id_t
 ultk_backend_sdl3_get_canvas_id (
