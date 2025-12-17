@@ -1,5 +1,4 @@
 #include "backend.h"
-#include <SDL3/SDL_render.h>
 
 ultk_return_t
 ultk_backend_draw_pixel (

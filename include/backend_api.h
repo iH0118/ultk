@@ -3,7 +3,8 @@
 
 #include <types.h>
 
-#define _ULTK_BACKEND_MAX_CANVAS_COUNT (8)
+#define _ULTK_BACKEND_MAX_CANVAS_COUNT (16)
+#define _ULTK_BACKEND_MAX_EVENT_COUNT  (64)
 
 ultk_return_t
 ultk_backend_initialize ();
@@ -55,8 +56,7 @@ ultk_backend_draw_line (
 
 ultk_return_t
 ultk_backend_query_input (
-    ultk_canvas_id_t    canvas_id,
-    ultk_input_state_t *input_state
+    ultk_input_queue_t *input_queue
 );
 
 #endif
