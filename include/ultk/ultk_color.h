@@ -1,0 +1,43 @@
+#ifndef _ULTK_COLOR_H
+#define _ULTK_COLOR_H
+
+#include <ultk/ultk_common.h>
+
+typedef enum ultk_color_index ultk_color_index_t;
+typedef union ultk_color_rgba ultk_color_rgba_t;
+
+enum ultk_color_index {
+    ULTK_COLOR_BACKGROUND,
+    ULTK_COLOR_BUTTON_BORDER,
+    ULTK_COLOR_BUTTON_FILL,
+    ULTK_COLOR_BUTTON_FILL_ACTIVE,
+    ULTK_COLOR_BUTTON_FILL_HOVER,
+    ULTK_COLOR_CHECKBOX_BORDER,
+    ULTK_COLOR_CHECKBOX_FILL,
+    ULTK_COLOR_CHECKBOX_FILL_ACTIVE,
+    ULTK_COLOR_CHECKBOX_FILL_HOVER,
+    ULTK_COLOR_CHECKBOX_CHECKMARK,
+    ULTK_COLOR_CONTAINER_BACKGROUND,
+    ULTK_COLOR_CONTAINER_BORDER,
+    ULTK_COLOR_CONTAINER_SEPARATOR,
+    ULTK_COLOR_PROGRESSBAR_BORDER,
+    ULTK_COLOR_PROGRESSBAR_FILL,
+    ULTK_COLOR_PROGRESSBAR_FILL_ACTIVE,
+    ULTK_COLOR_RADIOBUTTON_BORDER,
+    ULTK_COLOR_RADIOBUTTON_FILL,
+    ULTK_COLOR_RADIOBUTTON_FILL_ACTIVE,
+    ULTK_COLOR_RADIOBUTTON_FILL_HOVER,
+    ULTK_COLOR_TEXT
+};
+
+union ultk_color_rgba {
+    struct {
+        uint8_t r;
+        uint8_t g;
+        uint8_t b;
+        uint8_t a;
+    };
+    uint32_t rgba;
+};
+
+#endif

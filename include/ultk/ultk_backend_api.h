@@ -1,10 +1,10 @@
 #ifndef _ULTK_BACKEND_API_H
 #define _ULTK_BACKEND_API_H
 
-#include <types.h>
+#include <ultk/ultk.h>
 
 #define _ULTK_BACKEND_MAX_CANVAS_COUNT (16)
-#define _ULTK_BACKEND_MAX_EVENT_COUNT  (64)
+#define _ULTK_BACKEND_EVENT_QUEUE_LENGTH (64)
 
 ultk_return_t
 ultk_backend_initialize ();

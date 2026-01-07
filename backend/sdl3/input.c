@@ -32,7 +32,7 @@ ultk_backend_query_input (
 
     while (SDL_PollEvent(&event_be))
     {
-        if (input_queue->num_events >= _ULTK_BACKEND_MAX_EVENT_COUNT)
+        if (input_queue->num_events >= _ULTK_BACKEND_EVENT_QUEUE_LENGTH)
         {
             return ULTK_BACKEND_INPUT_QUEUE_FULL;
         }

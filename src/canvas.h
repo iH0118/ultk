@@ -1,6 +1,6 @@
 #ifndef _ULTK_CANVAS_H
 #define _ULTK_CANVAS_H
 
-#include <types.h>
+#include <ultk/ultk_canvas.h>
 
 #endif
