@@ -1,5 +1,5 @@
-#ifndef _ULTK_WIDGET_H
-#define _ULTK_WIDGET_H
+#ifndef _ULTK_WIDGET_H_
+#define _ULTK_WIDGET_H_
 
 #include <ultk/ultk_widget.h>
 

@@ -1,5 +1,5 @@
-#ifndef _ULTK_INIT_H
-#define _ULTK_INIT_H
+#ifndef _ULTK_INIT_H_
+#define _ULTK_INIT_H_
 
 #include <ultk/ultk.h>
 
