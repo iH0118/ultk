@@ -43,6 +43,14 @@ Comments
 ## File structure
 
 ```
+metadata: {
+  name: <string>,
+  version: <string>,
+  id: <string>,
+  creator: <string>,
+  copyright: <string>,
+  url: <string>
+},
 canvas: [
     <canvas>,
     <canvas>,
@@ -120,7 +128,8 @@ canvas: [
     size_max: {
       x: <int>, // 0 for no limit
       y: <int>  // 0 for no limit
-    }
+    },
+    callback_id: <string>
   }
   ```
 
@@ -130,7 +139,8 @@ canvas: [
     type: checkbox,
     id: <string>,
     label: <string>,
-    checked: <bool>
+    checked: <bool>,
+    callback_id: <string>
   }
   ```
 
@@ -161,6 +171,7 @@ canvas: [
     type: container_label,
     id: <string>,
     label: <string>,
+    label_align: (left | center | right),
     border <bool>,
     w_child: <widget>
   }

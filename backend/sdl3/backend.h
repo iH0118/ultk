@@ -2,6 +2,7 @@
 #define _ULTK_BACKEND_SDL3_H
 
 #include <SDL3/SDL.h>
+#include <SDL3/SDL_main.h>
 #include <ultk/ultk_backend_api.h>
 
 typedef struct ultk_backend_sdl3_canvas_index ultk_backend_sdl3_canvas_index_t;
