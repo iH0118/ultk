@@ -5,23 +5,31 @@
 
 SDL_AppResult
 SDL_AppInit (
-    void **appstate,
+    ultk_backend_sdl3_appdata_t **appstate,
     int argc,
     char **argv
 )
 {
+    *appstate = malloc(sizeof(ultk_backend_sdl3_appdata_t));
+
+    if (!*appstate)
+    {
+        return SDL_APP_FAILURE;
+    }
+
+    (*appstate)->num_canvas_max = ULTK_BACKEND_SDL3_CANVAS_INDEX_INCREMENT;    
 }
 
 SDL_AppResult
 SDL_AppIterate (
-    void *appstate
+    ultk_backend_sdl3_appdata_t *appstate
 )
 {
 }
 
 SDL_AppResult
 SDL_AppEvent (
-    void *appstate,
+    ultk_backend_sdl3_appdata_t *appstate,
     SDL_Event *event
 )
 {
@@ -29,7 +37,7 @@ SDL_AppEvent (
 
 void
 SDL_AppQuit (
-    void *appstate,
+    ultk_backend_sdl3_appdata_t *appstate,
     SDL_AppResult result
 )
 {

@@ -10,6 +10,8 @@ enum ultk_return {
     ULTK_SUCCESS                                   =  0x00,
     ULTK_BACKEND_INPUT_QUEUE_FULL                  =  0x1001,
     ULTK_ERROR_UNSPECIFIED                         = -0x01,
+    ULTK_ERROR_ALLOCATION_FAILED                   = -0x02,
+    ULTK_ERROR_UIDL_SYNTAX                         = -0x03,
     ULTK_BACKEND_ERROR_UNSPECIFIED                 = -0x1001,
     ULTK_BACKEND_ERROR_INIT_ERROR                  = -0x1002,
     ULTK_BACKEND_ERROR_NOT_INITIALIZED             = -0x1003,

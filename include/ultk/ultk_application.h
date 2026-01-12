@@ -3,8 +3,22 @@
 
 #include <ultk/ultk_canvas.h>
 
+typedef enum   ultk_callback_return      ultk_callback_return_t;
+typedef struct ultk_callback_fn          ultk_callback_fn_t;
 typedef struct ultk_application          ultk_application_t;
 typedef struct ultk_application_metadata ultk_application_metadata_t;
+
+enum ultk_callback_return {
+    ULTK_CALLBACK_SUCCESS,
+    ULTK_CALLBACK_CONTINUE,
+    ULTK_CALLBACK_ERROR
+};
+
+struct ultk_callback_fn {
+    char *id;
+    ultk_callback_return_t (*function)(void*);
+    void *passed_pointer;
+};
 
 struct ultk_application_metadata {
     char *name;
@@ -16,9 +30,25 @@ struct ultk_application_metadata {
 };
 
 struct ultk_application {
-    ultk_application_metadata_t metadata;
-    unsigned int canvas_count;
+    ultk_application_metadata_t *metadata;
+    unsigned int num_canvas;
     ultk_canvas_t *canvas;
+    unsigned int num_callbacks;
+    ultk_callback_fn_t *callbacks;
 };
+
+ultk_return_t
+ultk_register_callback (
+    ultk_application_t *application,
+    char *id,
+    ultk_callback_return_t (*function)(void*),
+    void *passed_pointer
+);
+
+ultk_return_t
+ultk_unregister_callback (
+    ultk_application_t *application,
+    char* id
+);
 
 #endif

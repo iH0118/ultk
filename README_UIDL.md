@@ -36,26 +36,26 @@ types of objects:
 Comments
 ```
 # i am a comment
-; whoa me too
-// is this like a comment meetup or something?
 ```
 
 ## File structure
 
 ```
-metadata: {
-  name: <string>,
-  version: <string>,
-  id: <string>,
-  creator: <string>,
-  copyright: <string>,
-  url: <string>
-},
-canvas: [
-    <canvas>,
-    <canvas>,
-    ...
-]
+application: {
+  metadata: {
+    name: <string>,
+    version: <string>,
+    id: <string>,
+    creator: <string>,
+    copyright: <string>,
+    url: <string>
+  },
+  canvas: [
+      <canvas>,
+      <canvas>,
+      ...
+  ]
+}
 ```
 
 ### Canvas struct
@@ -65,8 +65,8 @@ canvas: [
       id: <string>,
       title: <string>,
       dims: {
-          x: <int>, // 0 for dynamic calculation
-          y: <int>  // 0 for dynamic calculation
+          x: <int>, # 0 for dynamic calculation
+          y: <int>  # 0 for dynamic calculation
       },
       w_top: <widget>
   }
@@ -92,7 +92,7 @@ canvas: [
     w_children: [
       <widget>,
       ...
-    ] // num_children = num_rows * num_cols
+    ] # num_children = num_rows * num_cols
   }
   ```
 
@@ -105,7 +105,7 @@ canvas: [
     alignment: (left | right | center | fill),
     keep_grid: <bool>,
     reflow_direction: (horizontal | vertical),
-    max_reflow_sections: <int> // 0 for no limit
+    max_reflow_sections: <int> # 0 for no limit
     w_children: [
       <widget>,
       ...
@@ -122,12 +122,12 @@ canvas: [
     label_align_x: (left | center | right),
     label_align_y: (top | center | bottom),
     size_min: {
-      x: <int>, // 0 for no limit
-      y: <int>  // 0 for no limit
+      x: <int>, # 0 for no limit
+      y: <int>  # 0 for no limit
     },
     size_max: {
-      x: <int>, // 0 for no limit
-      y: <int>  // 0 for no limit
+      x: <int>, # 0 for no limit
+      y: <int>  # 0 for no limit
     },
     callback_id: <string>
   }

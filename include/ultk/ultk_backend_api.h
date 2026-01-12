@@ -54,9 +54,11 @@ ultk_backend_draw_line (
     ultk_color_rgba_t   color_rgba
 );
 
+/*
 ultk_return_t
 ultk_backend_query_input (
     ultk_input_queue_t *input_queue
 );
+*/
 
 #endif
