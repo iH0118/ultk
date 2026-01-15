@@ -12,6 +12,7 @@ enum ultk_return {
     ULTK_ERROR_UNSPECIFIED                         = -0x01,
     ULTK_ERROR_ALLOCATION_FAILED                   = -0x02,
     ULTK_ERROR_UIDL_SYNTAX                         = -0x03,
+    ULTK_ERROR_UIDL_MISSING_FIELD                  = -0x04,
     ULTK_BACKEND_ERROR_UNSPECIFIED                 = -0x1001,
     ULTK_BACKEND_ERROR_INIT_ERROR                  = -0x1002,
     ULTK_BACKEND_ERROR_NOT_INITIALIZED             = -0x1003,

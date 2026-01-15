@@ -1,132 +1,8 @@
 #include "application.h"
-#include "ultk/ultk_application.h"
-#include "ultk/ultk_canvas.h"
-#include "ultk/ultk_common.h"
+#include "uidl.h"
+#include "alloc.h"
 #include <stdlib.h>
 #include <string.h>
-
-typedef enum ultk_uidl_object_type ultk_uidl_object_type_t;
-typedef struct ultk_uidl_object ultk_uidl_object_t;
-
-enum ultk_uidl_object_type {
-    ULTK_UIDL_OBJECT_NONE,
-    ULTK_UIDL_OBJECT_BOOL,
-    ULTK_UIDL_OBJECT_INT,
-    ULTK_UIDL_OBJECT_FLOAT,
-    ULTK_UIDL_OBJECT_STRING,
-    ULTK_UIDL_OBJECT_LIST,
-    ULTK_UIDL_OBJECT_ARRAY,
-    ULTK_UIDL_OBJECT_APPLICATION,
-    ULTK_UIDL_OBJECT_METADATA,
-    ULTK_UIDL_OBJECT_CANVAS,
-    ULTK_UIDL_OBJECT_CANVAS_LIST,
-    ULTK_UIDL_OBJECT_WIDGET,
-    ULTK_UIDL_OBJECT_WIDGET_ARRAY,
-    ULTK_UIDL_OBJECT_ID,
-    ULTK_UIDL_OBJECT_ENUM_CANVAS_TYPE,
-    ULTK_UIDL_OBJECT_ENUM,
-    ULTK_UIDL_OBJECT_ENUM_WIDGET_TYPE,
-    ULTK_UIDL_OBJECT_ENUM_WIDGET_ALIGNMENT,
-    ULTK_UIDL_OBJECT_ENUM_REFLOW_DIRECTION,
-    ULTK_UIDL_OBJECT_ENUM_LABEL_ALIGN_X,
-    ULTK_UIDL_OBJECT_ENUM_LABEL_ALIGN_Y,
-    ULTK_UIDL_OBJECT_ERROR = -1
-};
-
-ultk_return_t
-ultk_alloc_application_metadata (
-    ultk_application_metadata_t **metadata
-)
-{
-    *metadata = calloc(1, sizeof(ultk_application_metadata_t));
-
-    if (!*metadata)
-    {
-        return ULTK_ERROR_ALLOCATION_FAILED;
-    }
-
-    return ULTK_SUCCESS;
-}
-
-ultk_return_t
-ultk_alloc_canvas (
-    ultk_canvas_t **canvas,
-    unsigned int *num_canvas
-)
-{
-    *canvas = realloc(*canvas, ++(*num_canvas) * sizeof(ultk_canvas_t));
-
-    if (!*canvas)
-    {
-        return ULTK_ERROR_ALLOCATION_FAILED;
-    }
-
-    return ULTK_SUCCESS;
-}
-
-
-char *
-ultk_uidl_parser_skip (
-    char *token
-)
-{
-    int wslen = strspn(token, " \f\n\r\t\v");
-
-    if (token[wslen] == '#')
-    {
-        return ultk_uidl_parser_skip(strchr(token + wslen, '\n') + 1);
-    }
-
-    return token + wslen;
-}
-
-_Bool
-ultk_uidl_conditional_advance (
-    char **token,
-    const char *target
-)
-{
-    int target_len = strlen(target);
-
-    if (!strncmp(*token, target, target_len))
-    {
-        *token = ultk_uidl_parser_skip(*token + target_len);
-        return 1;
-    }
-
-    return 0;
-}
-
-ultk_return_t
-ultk_uidl_parse_string (
-    char **token,
-    char **string
-)
-{
-    if (!ultk_uidl_conditional_advance(token, "\""))
-    {
-        return ULTK_ERROR_UIDL_SYNTAX;
-    }
-
-    int len = strcspn(*token, "\"");
-
-    *string = malloc(len + 1);
-    if (!*string)
-    {
-        return ULTK_ERROR_ALLOCATION_FAILED;
-    }
-
-    strncpy(*string, *token, len);
-
-    *token += len;
-
-    if (!ultk_uidl_conditional_advance(token, "\""))
-    {
-        return ULTK_ERROR_UIDL_SYNTAX;
-    }
-
-    return ULTK_SUCCESS;
-}
 
 ultk_return_t
 ultk_uidl_parse_metadata (
@@ -134,12 +10,14 @@ ultk_uidl_parse_metadata (
     ultk_application_metadata_t **metadata
 )
 {
+    ultk_return_t status;
+
     if (!ultk_uidl_conditional_advance(token, "{"))
     {
         return ULTK_ERROR_UIDL_SYNTAX;
     }
 
-    ultk_return_t status = ultk_alloc_application_metadata(metadata);
+    status = ultk_alloc_application_metadata(metadata);
 
     if (status != ULTK_SUCCESS)
     {
@@ -148,38 +26,32 @@ ultk_uidl_parse_metadata (
 
     while (1)
     {
-        if (ultk_uidl_conditional_advance(token, "name") &&
-            ultk_uidl_conditional_advance(token, ":"))
+        if (ultk_uidl_cond_adv_col(token, "name"))
         {
             status = ultk_uidl_parse_string(token, &(*metadata)->name);
         }
 
-        if (ultk_uidl_conditional_advance(token, "version") &&
-            ultk_uidl_conditional_advance(token, ":"))
+        if (ultk_uidl_cond_adv_col(token, "version"))
         {
             status = ultk_uidl_parse_string(token, &(*metadata)->version);
         }
 
-        if (ultk_uidl_conditional_advance(token, "id") &&
-            ultk_uidl_conditional_advance(token, ":"))
+        if (ultk_uidl_cond_adv_col(token, "id"))
         {
             status = ultk_uidl_parse_string(token, &(*metadata)->id);
         }
 
-        if (ultk_uidl_conditional_advance(token, "creator") &&
-            ultk_uidl_conditional_advance(token, ":"))
+        if (ultk_uidl_cond_adv_col(token, "creator"))
         {
             status = ultk_uidl_parse_string(token, &(*metadata)->creator);
         }
 
-        if (ultk_uidl_conditional_advance(token, "copyright") &&
-            ultk_uidl_conditional_advance(token, ":"))
+        if (ultk_uidl_cond_adv_col(token, "copyright"))
         {
             status = ultk_uidl_parse_string(token, &(*metadata)->copyright);
         }
 
-        if (ultk_uidl_conditional_advance(token, "url") &&
-            ultk_uidl_conditional_advance(token, ":"))
+        if (ultk_uidl_cond_adv_col(token, "url"))
         {
             status = ultk_uidl_parse_string(token, &(*metadata)->url);
         }
@@ -198,6 +70,8 @@ ultk_uidl_parse_metadata (
         {
             break;
         }
+
+        return ULTK_ERROR_UIDL_SYNTAX;
     }
 
     return ULTK_SUCCESS;
@@ -210,6 +84,9 @@ ultk_uidl_parse_canvas_array (
     unsigned int *num_canvas
 )
 {
+    ultk_return_t status;
+    int current_canvas = -1;
+
     if (!ultk_uidl_conditional_advance(token, "["))
     {
         return ULTK_ERROR_UIDL_SYNTAX;
@@ -222,9 +99,103 @@ ultk_uidl_parse_canvas_array (
             return ULTK_ERROR_UIDL_SYNTAX;
         }
 
+        status = ultk_alloc_canvas_array(canvas, num_canvas);
+
+        if (status != ULTK_SUCCESS)
+        {
+            return status;
+        }
+
+        (*canvas)->type = ULTK_CANVAS_NULL;
+        (*canvas)->id = NULL;
+        (*canvas)->title = NULL;
+        (*canvas)->size.x = 0;
+        (*canvas)->size.y = 0;
+        (*canvas)->widget_top = NULL;
+
+        current_canvas += 1;
+
         while (1)
         {
-            //parse canvas struct
+            if (ultk_uidl_cond_adv_col(token, "type"))
+            {
+                status = ultk_uidl_parse_canvas_type(token, &(*canvas)[current_canvas].type);
+            }
+
+            if (ultk_uidl_cond_adv_col(token, "id"))
+            {
+                status = ultk_uidl_parse_string(token, &(*canvas)[current_canvas].id);
+            }
+
+            if (ultk_uidl_cond_adv_col(token, "title"))
+            {
+                status = ultk_uidl_parse_string(token, &(*canvas)[current_canvas].title);
+            }
+
+            if (ultk_uidl_cond_adv_col(token, "dims"))
+            {
+                if (!ultk_uidl_conditional_advance(token, "{"))
+                {
+                    return ULTK_ERROR_UIDL_SYNTAX;
+                }
+
+                while (1)
+                {
+                    if (ultk_uidl_cond_adv_col(token, "x"))
+                    {
+                        status = ultk_uidl_parse_int(token, &(*canvas)->size.x);
+                    }
+
+                    if (ultk_uidl_cond_adv_col(token, "y"))
+                    {
+                        status = ultk_uidl_parse_int(token, &(*canvas)->size.y);
+                    }
+
+                    if (status != ULTK_SUCCESS)
+                    {
+                        return status;
+                    }
+                
+                    if (ultk_uidl_conditional_advance(token, ","))
+                    {
+                        continue;
+                    }
+                
+                    if (ultk_uidl_conditional_advance(token, "}"))
+                    {
+                        break;
+                    }
+
+                    return ULTK_ERROR_UIDL_SYNTAX;
+                }
+            }
+
+            if (ultk_uidl_cond_adv_col(token, "w_top"))
+            {
+                status = ultk_uidl_parse_widget(token, &(*canvas)->widget_top);
+            }
+
+            if (status != ULTK_SUCCESS)
+            {
+                return status;
+            }
+
+            if (ultk_uidl_conditional_advance(token, ","))
+            {
+                continue;
+            }
+
+            if (ultk_uidl_conditional_advance(token, "}"))
+            {
+                break;
+            }
+
+            return ULTK_ERROR_UIDL_SYNTAX;
+        }
+
+        if ((*canvas)->type == ULTK_CANVAS_NULL || !(*canvas)->id)
+        {
+            return ULTK_ERROR_UIDL_MISSING_FIELD;
         }
 
         if (ultk_uidl_conditional_advance(token, ","))
@@ -236,13 +207,12 @@ ultk_uidl_parse_canvas_array (
         {
             break;
         }
+
+        return ULTK_ERROR_UIDL_SYNTAX;
     }
 
     return ULTK_SUCCESS;
 }
-
-
-
 
 ultk_return_t
 ultk_uidl_parse_application (
@@ -250,6 +220,8 @@ ultk_uidl_parse_application (
     ultk_application_t *application
 )
 {
+    ultk_return_t status;
+
     if (!ultk_uidl_conditional_advance(token, "{"))
     {
         return ULTK_ERROR_UIDL_SYNTAX;
@@ -257,19 +229,19 @@ ultk_uidl_parse_application (
 
     while (1)
     {
-        if (ultk_uidl_conditional_advance(token, "metadata") &&
-            ultk_uidl_conditional_advance(token, ":"))
+        if (ultk_uidl_cond_adv_col(token, "metadata"))
         {
-            if (ultk_uidl_parse_metadata(token, &application->metadata))
-            {
-                return ULTK_ERROR_UIDL_SYNTAX;
-            }
+            status = ultk_uidl_parse_metadata(token, &application->metadata);
         }
 
-        if (ultk_uidl_conditional_advance(token, "canvas") &&
-            ultk_uidl_conditional_advance(token, ":"))
+        if (ultk_uidl_cond_adv_col(token, "canvas"))
         {
-            //add stuff here
+            status = ultk_uidl_parse_canvas_array(token, &application->canvas, &application->num_canvas);
+        }
+
+        if (status != ULTK_SUCCESS)
+        {
+            return status;
         }
 
         if (ultk_uidl_conditional_advance(token, ","))
@@ -308,12 +280,11 @@ ultk_init_application (
 
     char *token = ultk_uidl_parser_skip(uidl_textbuf);
 
-    if (!ultk_uidl_conditional_advance(&token, "application") ||
-        !ultk_uidl_conditional_advance(&token, ":"))
+    if (!ultk_uidl_cond_adv_col(&token, "application"))
     {
         return ULTK_ERROR_UIDL_SYNTAX;
     } 
-    
+
 
 
 

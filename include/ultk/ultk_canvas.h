@@ -9,6 +9,7 @@ typedef enum ultk_canvas_type ultk_canvas_type_t;
 typedef struct ultk_canvas    ultk_canvas_t;
 
 enum ultk_canvas_type {
+    ULTK_CANVAS_NULL,
     ULTK_CANVAS_APPLICATION,
     ULTK_CANVAS_UTILITY,
     ULTK_CANVAS_POPUP_MENU,
@@ -17,7 +18,8 @@ enum ultk_canvas_type {
 
 struct ultk_canvas {
     ultk_canvas_type_t type;
-    ultk_canvas_id_t id;
+    char *id;
+    char *title;
     struct {
         ultk_screen_coord_t x;
         ultk_screen_coord_t y;

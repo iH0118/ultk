@@ -23,6 +23,7 @@ typedef struct ultk_widget_text_input_numeric ultk_widget_text_input_numeric_t;
 typedef struct ultk_widget                    ultk_widget_t;
 
 enum ultk_widget_type {
+    ULTK_WIDGET_NULL,
     ULTK_WIDGET_VOID,
     ULTK_WIDGET_ARRAY_STATIC,
     ULTK_WIDGET_ARRAY_DYNAMIC,
@@ -66,8 +67,8 @@ enum ultk_reflow_direction {
 //struct ultk_widget_void {};
 
 struct ultk_widget_array_static {
-    unsigned int num_rows;
-    unsigned int num_cols;
+    int num_rows;
+    int num_cols;
     ultk_array_alignment_t alignment;
     _Bool scrollable_x;
     _Bool scrollable_y;
@@ -75,11 +76,11 @@ struct ultk_widget_array_static {
 };
 
 struct ultk_widget_array_dynamic {
-    unsigned int num_children;
+    int num_children;
     ultk_array_alignment_t alignment;
     _Bool keep_grid;
     ultk_reflow_direction_t reflow_direction;
-    unsigned int max_reflow_sections;
+    int max_reflow_sections;
     ultk_widget_t **children;
 };
 
@@ -88,12 +89,12 @@ struct ultk_widget_button {
     ultk_text_alignment_x_t label_align_x;
     ultk_text_alignment_y_t label_align_y;
     struct {
-        unsigned int x;
-        unsigned int y;
+        int x;
+        int y;
     } size_min;
     struct {
-        unsigned int x;
-        unsigned int y;
+        int x;
+        int y;
     } size_max;
     char *callback_id_press;
 };
@@ -113,10 +114,10 @@ struct ultk_widget_container {
         float b;
     } padding_relative;
     struct {
-        unsigned int l;
-        unsigned int r;
-        unsigned int t;
-        unsigned int b;
+        int l;
+        int r;
+        int t;
+        int b;
     } padding_absolute;
     ultk_widget_t *child;
 };

@@ -19,17 +19,17 @@ types of objects:
 - Lists
   ```
   list: {
-      item1: <object>,
-      item2: <object>,
-      ...
+    item1: <object>,
+    item2: <object>,
+    ...
   }
   ```
 - Arrays
   ```
   array: [
-      <object>,
-      <object>,
-      ...
+    <object>,
+    <object>,
+    ...
   ]
   ```
 
@@ -51,38 +51,37 @@ application: {
     url: <string>
   },
   canvas: [
-      <canvas>,
-      <canvas>,
-      ...
+    <canvas>,
+    <canvas>,
+    ...
   ]
 }
 ```
 
 ### Canvas struct
   ```
-  <canvas>: {
-      type: (application | utility | popup | tooltip),
-      id: <string>,
-      title: <string>,
-      dims: {
-          x: <int>, # 0 for dynamic calculation
-          y: <int>  # 0 for dynamic calculation
-      },
-      w_top: <widget>
+  <canvas>: <canvas_type> {
+    id: <string>,
+    title: <string>,
+    size_x: <int>, # 0 for dynamic calculation
+    size_y: <int>, # 0 for dynamic calculation
+    w_top: <widget>
   }
+  ```
+  ```
+  <canvas_type>: (application | utility | popup | tooltip)
   ```
 
 ## Widgets
 
 - Void
   ```
-  <w_void>: {}
+  <widget>: void
   ```
 
 - Static array
   ```
-  <widget>: {
-    type: array_static,
+  <widget>: array_static {
     id: <string>,
     num_rows: <int>,
     num_cols: <int>,
@@ -98,8 +97,7 @@ application: {
 
 - Dynamic array
   ```
-  <widget>: {
-    type: array_dynamic,
+  <widget>: array_dynamic {
     id: <string>,
     num_children: <int>,
     alignment: (left | right | center | fill),
@@ -115,28 +113,22 @@ application: {
 
 - Button
   ```
-  <widget>: {
-    type: button,
+  <widget>: button {
     id: <string>,
     label: <string>,
     label_align_x: (left | center | right),
     label_align_y: (top | center | bottom),
-    size_min: {
-      x: <int>, # 0 for no limit
-      y: <int>  # 0 for no limit
-    },
-    size_max: {
-      x: <int>, # 0 for no limit
-      y: <int>  # 0 for no limit
-    },
+    size_min_x: <int>, # 0 for no limit
+    size_min_y: <int>, # 0 for no limit
+    size_max_x: <int>, # 0 for no limit
+    size_max_y: <int>, # 0 for no limit
     callback_id: <string>
   }
   ```
 
 - Checkbox
   ```
-  <widget>: {
-    type: checkbox,
+  <widget>: checkbox {
     id: <string>,
     label: <string>,
     checked: <bool>,
@@ -146,8 +138,7 @@ application: {
 
 - Container
   ```
-  <widget>: {
-    type: container,
+  <widget>: container {
     id: <string>,
     padding_relative: {
       l: <float>,
@@ -167,8 +158,7 @@ application: {
 
 - Labeled container
   ```
-  <widget>: {
-    type: container_label,
+  <widget>: container_label {
     id: <string>,
     label: <string>,
     label_align: (left | center | right),
@@ -178,3 +168,76 @@ application: {
   ```
 
 > TODO: finish writing this i guess
+
+## UIB bytecode format
+
+- all numbers use little endian format
+- all sizes are in bytes
+
+file structure:
+```
+"UIB" header
+<uint32> application_size
+<application>
+```
+
+application:
+```
+<uint16> meta_name_size
+<string> meta_name
+<uint16> meta_version_size
+<string> meta_version
+<uint16> meta_id_size
+<string> meta_id
+<uint16> meta_creator_size
+<string> meta_creator
+<uint16> meta_copyright_size
+<string> meta_copyright
+<uint16> meta_url_size
+<string> meta_url
+<uint16> canvas_count
+<uint32> canvas_size
+<canvas>
+(<uint32> canvas_size
+ <canvas>
+ ...)
+```
+
+canvas: 
+```
+<uint8> canvas_type
+<uint16> id_size
+<string> id
+<uint16> title_size
+<string> title
+<uint16> size_x
+<uint16> size_y
+<uint32> widget_size
+<widget>
+```
+
+widget:
+```
+<uint8> widget_type
+<uint16> id_size
+<string> id
+<widget_data>
+```
+
+widget_data:
+- array_static
+  ```
+  <uint8> num_rows
+  <uint8> num_cols
+  <uint8> alignment
+  <bool> scrollable_x
+  <bool> scrollable_y
+  <uint16> num_children
+  <uint32> widget_size
+  <widget>
+  (<uint32> widget_size
+   <widget>
+   ...)
+  ```
+
+- array_dynamic
