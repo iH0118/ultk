@@ -99,11 +99,11 @@ application: {
   ```
   <widget>: array_dynamic {
     id: <string>,
-    num_children: <int>,
     alignment: (left | right | center | fill),
     keep_grid: <bool>,
     reflow_direction: (horizontal | vertical),
     max_reflow_sections: <int> # 0 for no limit
+    num_children: <int>,
     w_children: [
       <widget>,
       ...
@@ -168,76 +168,3 @@ application: {
   ```
 
 > TODO: finish writing this i guess
-
-## UIB bytecode format
-
-- all numbers use little endian format
-- all sizes are in bytes
-
-file structure:
-```
-"UIB" header
-<uint32> application_size
-<application>
-```
-
-application:
-```
-<uint16> meta_name_size
-<string> meta_name
-<uint16> meta_version_size
-<string> meta_version
-<uint16> meta_id_size
-<string> meta_id
-<uint16> meta_creator_size
-<string> meta_creator
-<uint16> meta_copyright_size
-<string> meta_copyright
-<uint16> meta_url_size
-<string> meta_url
-<uint16> canvas_count
-<uint32> canvas_size
-<canvas>
-(<uint32> canvas_size
- <canvas>
- ...)
-```
-
-canvas: 
-```
-<uint8> canvas_type
-<uint16> id_size
-<string> id
-<uint16> title_size
-<string> title
-<uint16> size_x
-<uint16> size_y
-<uint32> widget_size
-<widget>
-```
-
-widget:
-```
-<uint8> widget_type
-<uint16> id_size
-<string> id
-<widget_data>
-```
-
-widget_data:
-- array_static
-  ```
-  <uint8> num_rows
-  <uint8> num_cols
-  <uint8> alignment
-  <bool> scrollable_x
-  <bool> scrollable_y
-  <uint16> num_children
-  <uint32> widget_size
-  <widget>
-  (<uint32> widget_size
-   <widget>
-   ...)
-  ```
-
-- array_dynamic

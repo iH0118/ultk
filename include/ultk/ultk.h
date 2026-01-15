@@ -8,6 +8,6 @@
 #include <ultk/ultk_input.h>
 #include <ultk/ultk_canvas.h>
 #include <ultk/ultk_widget.h>
-#include <ultk/ultk_uidl.h>
+#include <ultk/ultk_uidl_uib.h>
 
 #endif
