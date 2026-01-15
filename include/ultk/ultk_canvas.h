@@ -3,18 +3,10 @@
 
 #include <ultk/ultk_common.h>
 #include <ultk/ultk_widget.h>
+#include <ultk/ultk_uidl_uib.h>
 
 typedef int                   ultk_canvas_id_t;
-typedef enum ultk_canvas_type ultk_canvas_type_t;
 typedef struct ultk_canvas    ultk_canvas_t;
-
-enum ultk_canvas_type {
-    ULTK_CANVAS_NULL,
-    ULTK_CANVAS_APPLICATION,
-    ULTK_CANVAS_UTILITY,
-    ULTK_CANVAS_POPUP_MENU,
-    ULTK_CANVAS_TOOLTIP
-};
 
 struct ultk_canvas {
     ultk_canvas_type_t type;

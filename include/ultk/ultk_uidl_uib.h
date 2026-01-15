@@ -1,11 +1,20 @@
 #ifndef _ULTK_UIDL_UIB_H
 #define _ULTK_UIDL_UIB_H
 
+typedef enum ultk_canvas_type      ultk_canvas_type_t;
 typedef enum ultk_widget_type      ultk_widget_type_t;
 typedef enum ultk_array_alignment  ultk_array_alignment_t;
 typedef enum ultk_text_alignment_x ultk_text_alignment_x_t;
 typedef enum ultk_text_alignment_y ultk_text_alignment_y_t;
 typedef enum ultk_reflow_direction ultk_reflow_direction_t;
+
+enum ultk_canvas_type {
+    ULTK_CANVAS_NULL,
+    ULTK_CANVAS_APPLICATION,
+    ULTK_CANVAS_UTILITY,
+    ULTK_CANVAS_POPUP_MENU,
+    ULTK_CANVAS_TOOLTIP
+};
 
 enum ultk_widget_type {
     ULTK_WIDGET_NULL,
