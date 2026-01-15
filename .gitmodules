@@ -1,0 +1,3 @@
+[submodule "util/uidlc"]
+	path = util/uidlc
+	url = ../uidlc.git
