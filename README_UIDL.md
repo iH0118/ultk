@@ -49,7 +49,7 @@ application: {
     creator: <string>,
     copyright: <string>,
     url: <string>
-  },
+  }, #optional, default {"", "", "", "", "", ""}
   canvas: [
     <canvas>,
     <canvas>,
@@ -62,9 +62,9 @@ application: {
   ```
   <canvas>: <canvas_type> {
     id: <string>,
-    title: <string>,
-    size_x: <int>, # 0 for dynamic calculation
-    size_y: <int>, # 0 for dynamic calculation
+    title: <string>, #optional, default ""
+    size_x: <int>, #optional, default 0, 0 for dynamic calculation
+    size_y: <int>, #optional, default 0, 0 for dynamic calculation
     w_top: <widget>
   }
   ```
@@ -85,13 +85,13 @@ application: {
     id: <string>,
     num_rows: <int>,
     num_cols: <int>,
-    alignment: (left | right | center | fill),
-    scrollable_x: <bool>,
-    scrollable_y: <bool>,
+    alignment: (left | right | center | fill), #optional, default fill
+    scrollable_x: <bool>, #optional, default true
+    scrollable_y: <bool>, #optional, default true
     w_children: [
       <widget>,
       ...
-    ] # num_children = num_rows * num_cols
+    ]
   }
   ```
 
@@ -99,11 +99,10 @@ application: {
   ```
   <widget>: array_dynamic {
     id: <string>,
-    alignment: (left | right | center | fill),
-    keep_grid: <bool>,
-    reflow_direction: (horizontal | vertical),
-    max_reflow_sections: <int> # 0 for no limit
-    num_children: <int>,
+    alignment: (left | right | center | fill), #optional, default fill
+    keep_grid: <bool>, #optional, default false
+    reflow_direction: (horizontal | vertical), #optional, default horizontal
+    max_reflow_sections: <int> #optional, default 0, 0 for no limit
     w_children: [
       <widget>,
       ...
@@ -115,14 +114,14 @@ application: {
   ```
   <widget>: button {
     id: <string>,
-    label: <string>,
-    label_align_x: (left | center | right),
-    label_align_y: (top | center | bottom),
-    size_min_x: <int>, # 0 for no limit
-    size_min_y: <int>, # 0 for no limit
-    size_max_x: <int>, # 0 for no limit
-    size_max_y: <int>, # 0 for no limit
-    callback_id: <string>
+    label: <string>, #optional, default ""
+    label_align_x: (left | center | right), #optional, default center
+    label_align_y: (top | center | bottom), #optional, default center
+    size_min_x: <int>, #optional, default 0, 0 for no limit
+    size_min_y: <int>, #optional, default 0, 0 for no limit
+    size_max_x: <int>, #optional, default 0, 0 for no limit
+    size_max_y: <int>, #optional, default 0, 0 for no limit
+    callback_id_press: <string>, #optional, default ""
   }
   ```
 
@@ -130,9 +129,10 @@ application: {
   ```
   <widget>: checkbox {
     id: <string>,
-    label: <string>,
-    checked: <bool>,
-    callback_id: <string>
+    label: <string>, #optional, default ""
+    checked: <bool>, #optional, default false
+    callback_id_check: <string>, #optional, default ""
+    callback_id_uncheck: <string>, #optional, default ""
   }
   ```
 
@@ -140,18 +140,14 @@ application: {
   ```
   <widget>: container {
     id: <string>,
-    padding_relative: {
-      l: <float>,
-      r: <float>,
-      t: <float>,
-      b: <float>
-    },
-    padding_absolute: {
-      l: <int>,
-      r: <int>,
-      t: <int>,
-      b: <int>
-    },
+    padding_relative_l: <float>, #optional, default 0.0
+    padding_relative_r: <float>, #optional, default 0.0
+    padding_relative_t: <float>, #optional, default 0.0
+    padding_relative_b: <float>, #optional, default 0.0
+    padding_absolute_l: <int>, #optional, default 0
+    padding_absolute_r: <int>, #optional, default 0
+    padding_absolute_t: <int>, #optional, default 0
+    padding_absolute_b: <int>, #optional, default 0
     w_child: <widget>
   }
   ```
@@ -160,9 +156,9 @@ application: {
   ```
   <widget>: container_label {
     id: <string>,
-    label: <string>,
-    label_align: (left | center | right),
-    border <bool>,
+    label: <string>, #optional, default ""
+    label_align: (left | center | right), #optional, default center
+    border <bool>, #optional, default false
     w_child: <widget>
   }
   ```

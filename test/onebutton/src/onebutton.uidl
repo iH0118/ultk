@@ -1,0 +1,43 @@
+application: {
+  metadata: {
+    name: "ULTK OneButton Test Application",
+    version: "0.0.1",
+    id: "com.ultk.onebutton",
+    creator: "iH0118",
+    copyright: "",
+    url: ""
+  },
+  canvas: [
+    application {
+      id: "c_main",
+      title: "ULTK OneButton Test Application",
+      w_top: container {
+        id: "w_cnt_top",
+        padding_absolute_l: 20,
+        padding_absolute_r: 20,
+        padding_absolute_t: 20,
+        padding_absolute_b: 20,
+        w_child: container_label {
+          id: "w_cnt_lbl",
+          label: "Pointless Button",
+          border: true,
+          w_child: container {
+            id: "w_cnt_inner",
+            padding_absolute_l: 20,
+            padding_absolute_r: 20,
+            padding_absolute_t: 20,
+            padding_absolute_b: 20,
+            w_child: button {
+              id: "w_btn",
+              label: "Warning: Pointless",
+              size_min_x: 120,
+              size_min_y: 80,
+              size_max_x: 120,
+              size_max_y: 80
+            }
+          }
+        }
+      }
+    }
+  ]
+}

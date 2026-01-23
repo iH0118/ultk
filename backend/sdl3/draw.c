@@ -2,31 +2,37 @@
 
 ultk_return_t
 ultk_backend_draw_pixel (
-    ultk_canvas_id_t    canvas_id,
+    void *backend_state,
+    ultk_canvas_numid_t canvas_id,
     ultk_screen_coord_t x,
     ultk_screen_coord_t y,
-    ultk_color_index_t  color_index,
-    ultk_color_rgba_t   color_rgba
+    ultk_color_index_t color_index,
+    ultk_color_rgba_t color_rgba
 )
 {
-    if (canvas_id >= _ULTK_BACKEND_MAX_CANVAS_COUNT)
+    ultk_backend_sdl3_appdata_t *appdata = backend_state;
+
+    if (appdata->num_canvas <= canvas_id)
     {
-        return ULTK_BACKEND_ERROR_CANVAS_INDEX_OUT_OF_RANGE;
+        return ULTK_BACKEND_ERROR_CANVAS_DOESNT_EXIST;
     }
 
-    if (!canvas_index[canvas_id].window)
+    if (!appdata->canvas[canvas_id].exists)
     {
         return ULTK_BACKEND_ERROR_CANVAS_DOESNT_EXIST;
     }
 
     if (!SDL_SetRenderDrawColor(
-            canvas_index[canvas_id].renderer,
-            color_rgba.r,
-            color_rgba.g,
-            color_rgba.b,
+            appdata->canvas[canvas_id].renderer,
+            color_rgba.r, 
+            color_rgba.g, 
+            color_rgba.b, 
             color_rgba.a
-        ) ||
-        !SDL_RenderPoint(canvas_index[canvas_id].renderer, x, y)
+        ) || !SDL_RenderPoint(
+            appdata->canvas[canvas_id].renderer, 
+            x, 
+            y
+        )
     )
     {
         return ULTK_BACKEND_ERROR_RENDER_ERROR;
@@ -37,34 +43,36 @@ ultk_backend_draw_pixel (
 
 ultk_return_t
 ultk_backend_draw_line (
-    ultk_canvas_id_t    canvas_id,
+    void *backend_state,
+    ultk_canvas_numid_t canvas_id,
     ultk_screen_coord_t start_x,
     ultk_screen_coord_t start_y,
     ultk_screen_coord_t end_x,
     ultk_screen_coord_t end_y,
-    ultk_color_index_t  color_index,
-    ultk_color_rgba_t   color_rgba
+    ultk_color_index_t color_index,
+    ultk_color_rgba_t color_rgba
 )
 {
-    if (canvas_id >= _ULTK_BACKEND_MAX_CANVAS_COUNT)
+    ultk_backend_sdl3_appdata_t *appdata = backend_state;
+
+    if (appdata->num_canvas <= canvas_id)
     {
-        return ULTK_BACKEND_ERROR_CANVAS_INDEX_OUT_OF_RANGE;
+        return ULTK_BACKEND_ERROR_CANVAS_DOESNT_EXIST;
     }
 
-    if (!canvas_index[canvas_id].window)
+    if (!appdata->canvas[canvas_id].exists)
     {
         return ULTK_BACKEND_ERROR_CANVAS_DOESNT_EXIST;
     }
 
     if (!SDL_SetRenderDrawColor(
-            canvas_index[canvas_id].renderer,
+            appdata->canvas[canvas_id].renderer,
             color_rgba.r,
             color_rgba.g,
             color_rgba.b,
             color_rgba.a
-        ) ||
-        !SDL_RenderLine(
-            canvas_index[canvas_id].renderer,
+        ) || !SDL_RenderLine(
+            appdata->canvas[canvas_id].renderer, 
             start_x, 
             start_y, 
             end_x, 

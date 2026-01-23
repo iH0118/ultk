@@ -1,100 +1,104 @@
+
+#include <stdlib.h>
 #include "backend.h"
 
 ultk_return_t
 ultk_backend_create_canvas (
-    ultk_canvas_id_t     *canvas_id,
-    ultk_screen_coord_t   requested_size_x,
-    ultk_screen_coord_t   requested_size_y,
-    ultk_screen_coord_t  *canvas_size_x,
-    ultk_screen_coord_t  *canvas_size_y,
-    ultk_color_index_t    color_fill_index,
-    ultk_color_rgba_t     color_fill_rgba,
-    char                 *title
+    void *backend_state,
+    ultk_canvas_numid_t canvas_id,
+    char *title,
+    ultk_screen_coord_t requested_size_x,
+    ultk_screen_coord_t requested_size_y,
+    ultk_screen_coord_t *canvas_size_x,
+    ultk_screen_coord_t *canvas_size_y,
+    ultk_color_index_t color_fill_index,
+    ultk_color_rgba_t color_fill_rgba
 )
 {
-    if (!canvas_index) return ULTK_BACKEND_ERROR_NOT_INITIALIZED;
+    ultk_backend_sdl3_appdata_t *appdata = backend_state;
 
-    int i;
-    for (i = 0; i < _ULTK_BACKEND_MAX_CANVAS_COUNT; i++)
+    if (appdata->num_canvas <= canvas_id)
     {
-        if (canvas_index[i].window) continue;
+        appdata->num_canvas = canvas_id + 1;
+        appdata->canvas = realloc(
+            appdata->canvas,
+            appdata->num_canvas * sizeof(ultk_backend_sdl3_canvas_t)
+        );
 
-        if (!SDL_CreateWindowAndRenderer(
-                title,
-                requested_size_x,
-                requested_size_y,
-                0,
-                &(canvas_index[i].window),
-                &(canvas_index[i].renderer)
-            )
-        ) 
+        if (appdata->canvas == NULL)
         {
-            return ULTK_BACKEND_ERROR_CANVAS_CREATION_ERROR;
+            return ULTK_BACKEND_ERROR_ALLOCATION_FAILED;
         }
 
-        SDL_GetWindowSize(canvas_index[i].window, canvas_size_x, canvas_size_y);
-
-        canvas_index[i].color_fill.r = color_fill_rgba.r;
-        canvas_index[i].color_fill.g = color_fill_rgba.g;
-        canvas_index[i].color_fill.b = color_fill_rgba.b;
-        canvas_index[i].color_fill.a = color_fill_rgba.a;
-
-        *canvas_id = i;
-
-        return ULTK_SUCCESS;
+        appdata->canvas[canvas_id].exists = 0;
     }
 
-    return ULTK_BACKEND_ERROR_MAX_CANVAS_COUNT_REACHED;
+    if (appdata->canvas[canvas_id].exists)
+    {
+        return ULTK_BACKEND_ERROR_CANVAS_ALREADY_EXISTS;
+    }
+
+    if (!SDL_CreateWindowAndRenderer(
+            title,
+            requested_size_x,
+            requested_size_y,
+            0,
+            &appdata->canvas[canvas_id].window,
+            &appdata->canvas[canvas_id].renderer
+        ))
+    {
+        return ULTK_BACKEND_ERROR_COULDNT_CREATE_CANVAS;
+    }
+
+    appdata->canvas[canvas_id].exists = 1;
+
+    SDL_GetWindowSize(
+        appdata->canvas[canvas_id].window,
+        canvas_size_x,
+        canvas_size_y
+    );
+
+    appdata->canvas[canvas_id].color_fill.r = color_fill_rgba.r;
+    appdata->canvas[canvas_id].color_fill.g = color_fill_rgba.g;
+    appdata->canvas[canvas_id].color_fill.b = color_fill_rgba.b;
+    appdata->canvas[canvas_id].color_fill.a = color_fill_rgba.a;
+
+    return ULTK_SUCCESS;
 }
 
 ultk_return_t
 ultk_backend_destroy_canvas (
-    ultk_canvas_id_t canvas_id
+    void *backend_state,
+    ultk_canvas_numid_t canvas_id
 )
 {
-    if (canvas_id >= _ULTK_BACKEND_MAX_CANVAS_COUNT)
-    {
-        return ULTK_BACKEND_ERROR_CANVAS_INDEX_OUT_OF_RANGE;
-    }
+    ultk_backend_sdl3_appdata_t *appdata = backend_state;
 
-    if (!canvas_index[canvas_id].window)
+    if (appdata->num_canvas <= canvas_id)
     {
         return ULTK_BACKEND_ERROR_CANVAS_DOESNT_EXIST;
     }
 
-    SDL_DestroyRenderer(canvas_index[canvas_id].renderer);
-    SDL_DestroyWindow(canvas_index[canvas_id].window);
+    if (!appdata->canvas[canvas_id].exists)
+    {
+        return ULTK_BACKEND_ERROR_CANVAS_DOESNT_EXIST;
+    }
+
+    SDL_DestroyRenderer(appdata->canvas[canvas_id].renderer);
+    SDL_DestroyWindow(appdata->canvas[canvas_id].window);
+
+    appdata->canvas[canvas_id].exists = 0;
 
     return ULTK_SUCCESS;
 }
 
+/*
 ultk_return_t
 ultk_backend_clear_canvas (
-    ultk_canvas_id_t canvas_id
+    void *backend_state,
+    ultk_canvas_numid_t canvas_id
 )
 {
-    if (canvas_id >= _ULTK_BACKEND_MAX_CANVAS_COUNT)
-    {
-        return ULTK_BACKEND_ERROR_CANVAS_INDEX_OUT_OF_RANGE;
-    }
-
-    if (!canvas_index[canvas_id].window)
-    {
-        return ULTK_BACKEND_ERROR_CANVAS_DOESNT_EXIST;
-    }
-
-    if (!SDL_SetRenderDrawColor(
-            canvas_index[canvas_id].renderer,
-            canvas_index[canvas_id].color_fill.r,
-            canvas_index[canvas_id].color_fill.g,
-            canvas_index[canvas_id].color_fill.b,
-            canvas_index[canvas_id].color_fill.a
-        ) ||
-        !SDL_RenderClear(canvas_index[canvas_id].renderer)
-    )
-    {
-        return ULTK_BACKEND_ERROR_RENDER_ERROR;
-    }
-
     return ULTK_SUCCESS;
 }
+*/

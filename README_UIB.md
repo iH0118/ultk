@@ -47,14 +47,18 @@ widget:
 ```
 <uint32> widget_size
 <enum8> widget_type
-<uint16> id_size
-<string> id
 <widget_data>
 ```
 
 widget_data:
+- void:
+  ```
+  ```
+
 - array_static:
   ```
+  <uint16> id_size
+  <string> id
   <uint8> num_rows
   <uint8> num_cols
   <enum8> alignment
@@ -67,6 +71,8 @@ widget_data:
 
 - array_dynamic:
   ```
+  <uint16> id_size
+  <string> id
   <enum8> alignment
   <bool> keep_grid
   <enum8> reflow_direction
@@ -78,6 +84,8 @@ widget_data:
 
 - button:
   ```
+  <uint16> id_size
+  <string> id
   <uint16> label_size
   <string> label
   <enum8> label_align_x
@@ -92,6 +100,8 @@ widget_data:
 
 - checkbox:
   ```
+  <uint16> id_size
+  <string> id
   <uint16> label_size
   <string> label
   <bool> checked
@@ -103,6 +113,8 @@ widget_data:
 
 - container:
   ```
+  <uint16> id_size
+  <string> id
   <fp32> pad_relative_l
   <fp32> pad_relative_r
   <fp32> pad_relative_t
@@ -116,6 +128,8 @@ widget_data:
 
 - container_label:
   ```
+  <uint16> id_size
+  <string> id
   <uint16> label_size
   <string> label
   <enum8> label_align

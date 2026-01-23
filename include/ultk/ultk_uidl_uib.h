@@ -1,6 +1,8 @@
 #ifndef _ULTK_UIDL_UIB_H
 #define _ULTK_UIDL_UIB_H
 
+#include <stdint.h>
+
 typedef enum ultk_canvas_type      ultk_canvas_type_t;
 typedef enum ultk_widget_type      ultk_widget_type_t;
 typedef enum ultk_array_alignment  ultk_array_alignment_t;

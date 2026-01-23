@@ -22,21 +22,22 @@ typedef struct ultk_widget                    ultk_widget_t;
 //struct ultk_widget_void {};
 
 struct ultk_widget_array_static {
-    int num_rows;
-    int num_cols;
+    uint8_t num_rows;
+    uint8_t num_cols;
     ultk_array_alignment_t alignment;
     _Bool scrollable_x;
     _Bool scrollable_y;
-    ultk_widget_t **children;
+    uint16_t num_children;
+    ultk_widget_t *children;
 };
 
 struct ultk_widget_array_dynamic {
-    int num_children;
     ultk_array_alignment_t alignment;
     _Bool keep_grid;
     ultk_reflow_direction_t reflow_direction;
-    int max_reflow_sections;
-    ultk_widget_t **children;
+    uint8_t max_reflow_sections;
+    uint16_t num_children;
+    ultk_widget_t *children;
 };
 
 struct ultk_widget_button {
@@ -44,12 +45,12 @@ struct ultk_widget_button {
     ultk_text_alignment_x_t label_align_x;
     ultk_text_alignment_y_t label_align_y;
     struct {
-        int x;
-        int y;
+        uint16_t x;
+        uint16_t y;
     } size_min;
     struct {
-        int x;
-        int y;
+        uint16_t x;
+        uint16_t y;
     } size_max;
     char *callback_id_press;
 };
@@ -69,10 +70,10 @@ struct ultk_widget_container {
         float b;
     } padding_relative;
     struct {
-        int l;
-        int r;
-        int t;
-        int b;
+        uint16_t l;
+        uint16_t r;
+        uint16_t t;
+        uint16_t b;
     } padding_absolute;
     ultk_widget_t *child;
 };
