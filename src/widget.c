@@ -25,7 +25,7 @@ ultk_create_widget_uib (
             position,
             &widget_size
         ) != ULTK_SUCCESS ||
-        *position + widget_size > uib_text_len)
+        initial_position + widget_size > uib_text_len)
     {
         return ULTK_ERROR_UIB_ERROR;
     }
@@ -44,6 +44,7 @@ ultk_create_widget_uib (
     switch (widget->type)
     {
         case ULTK_WIDGET_VOID:
+        status = ULTK_SUCCESS;
         break;
 
         case ULTK_WIDGET_ARRAY_STATIC:
@@ -115,4 +116,18 @@ ultk_create_widget_uib (
     }
 
     return ULTK_SUCCESS;
+}
+
+ultk_return_t
+ultk_draw_widget (
+    ultk_widget_t *widget
+)
+{
+}
+
+ultk_return_t
+ultk_destroy_widget (
+    ultk_widget_t *widget
+)
+{
 }

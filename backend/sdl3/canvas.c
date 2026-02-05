@@ -1,4 +1,3 @@
-
 #include <stdlib.h>
 #include "backend.h"
 
@@ -42,7 +41,7 @@ ultk_backend_create_canvas (
             title,
             requested_size_x,
             requested_size_y,
-            0,
+            SDL_WINDOW_RESIZABLE,
             &appdata->canvas[canvas_id].window,
             &appdata->canvas[canvas_id].renderer
         ))
@@ -52,11 +51,17 @@ ultk_backend_create_canvas (
 
     appdata->canvas[canvas_id].exists = 1;
 
+    int canvas_size_x_buffer;
+    int canvas_size_y_buffer;
+
     SDL_GetWindowSize(
         appdata->canvas[canvas_id].window,
-        canvas_size_x,
-        canvas_size_y
+        &canvas_size_x_buffer,
+        &canvas_size_y_buffer
     );
+
+    *canvas_size_x = canvas_size_x_buffer;
+    *canvas_size_y = canvas_size_y_buffer;
 
     appdata->canvas[canvas_id].color_fill.r = color_fill_rgba.r;
     appdata->canvas[canvas_id].color_fill.g = color_fill_rgba.g;

@@ -8,7 +8,7 @@ ultk_return_t
 ultk_init_application_uib (
     const char *uib_text,
     unsigned int uib_text_len,
-    ultk_application_t *application
+    ultk_application_t **application
 );
 
 #endif

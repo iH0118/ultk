@@ -1,10 +1,7 @@
 #ifndef _ULTK_BACKEND_SDL3_H
 #define _ULTK_BACKEND_SDL3_H
 
-#define SDL_MAIN_USE_CALLBACKS 1
-
 #include <SDL3/SDL.h>
-#include <SDL3/SDL_main.h>
 #include <ultk/ultk_backend_api.h>
 
 typedef struct ultk_backend_sdl3_canvas  ultk_backend_sdl3_canvas_t;
@@ -19,6 +16,7 @@ struct ultk_backend_sdl3_canvas {
 
 struct ultk_backend_sdl3_appdata {
     ultk_application_t *application;
+    void *application_data;
     unsigned int num_canvas;
     ultk_backend_sdl3_canvas_t *canvas;
 };

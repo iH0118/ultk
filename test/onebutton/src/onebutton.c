@@ -5,16 +5,18 @@ ultk_callback_return_t
 ultk_callback_preinit (
     void **application_data,
     char **uib_text,
-    size_t *uib_text_len
+    size_t *uib_text_len,
+    int argc,
+    char **argv
 )
 {
-    extern char *_binary_build_onebutton_uib_start;
-    extern char *_binary_build_onebutton_uib_end;
-    
+    extern char _binary_build_onebutton_uib_start;
+    extern char _binary_build_onebutton_uib_end;
+
     *application_data = NULL;
-    *uib_text = _binary_build_onebutton_uib_start;
+    *uib_text = &_binary_build_onebutton_uib_start;
     *uib_text_len =
-        _binary_build_onebutton_uib_end - _binary_build_onebutton_uib_start;
+        &_binary_build_onebutton_uib_end - &_binary_build_onebutton_uib_start;
 
     return ULTK_CALLBACK_CONTINUE;
 }

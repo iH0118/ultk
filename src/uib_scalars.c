@@ -15,7 +15,8 @@ ultk_uib_parse_bool (
         return ULTK_ERROR_UIB_ERROR;
     }
 
-    *target = uib_text[(*position)++];
+    *target = ((uint8_t *)uib_text)[*position];
+    *position += 1;
 
     return ULTK_SUCCESS;
 }
@@ -33,7 +34,8 @@ ultk_uib_parse_uint8 (
         return ULTK_ERROR_UIB_ERROR;
     }
 
-    *target = uib_text[(*position)++];
+    *target = ((uint8_t *)uib_text)[*position];
+    *position += 1;
 
     return ULTK_SUCCESS;
 }
@@ -51,7 +53,10 @@ ultk_uib_parse_uint16 (
         return ULTK_ERROR_UIB_ERROR;
     }
 
-    *target = uib_text[(*position)++] + (uib_text[(*position)++] << 8);
+    *target = ((uint8_t *)uib_text)[*position] + 
+        (((uint8_t *)uib_text)[*position + 1] << 8);
+
+    *position += 2;
 
     return ULTK_SUCCESS;
 }
@@ -69,8 +74,12 @@ ultk_uib_parse_uint32 (
         return ULTK_ERROR_UIB_ERROR;
     }
 
-    *target = uib_text[(*position)++] + (uib_text[(*position)++] << 8) +
-        (uib_text[(*position)++] << 16) + (uib_text[(*position)++] << 24);
+    *target = ((uint8_t *)uib_text)[*position] + 
+        (((uint8_t *)uib_text)[*position + 1] << 8) +
+        (((uint8_t *)uib_text)[*position + 2] << 16) +
+        (((uint8_t *)uib_text)[*position + 3] << 24);
+
+    *position += 4;
 
     return ULTK_SUCCESS;
 }
@@ -93,9 +102,11 @@ ultk_uib_parse_float (
         uint32_t val_uint;
     } target_bytes;
 
-    target_bytes.val_uint =
-        uib_text[(*position)++] + (uib_text[(*position)++] << 8) +
-        (uib_text[(*position)++] << 16) + (uib_text[(*position)++] << 24);;
+    target_bytes.val_uint = ((uint8_t *)uib_text)[*position] +
+        (((uint8_t *)uib_text)[*position + 1] << 8) +
+        (((uint8_t *)uib_text)[*position + 2] << 16) +
+        (((uint8_t *)uib_text)[*position + 3] << 24);
+    *position += 4;
 
     *target = target_bytes.val_float;
 
@@ -111,14 +122,14 @@ ultk_uib_parse_string (
     char **target
 )
 {
-    if (*position + target_len >= uib_text_len)
+    if (*position + target_len > uib_text_len)
     {
         return ULTK_ERROR_UIB_ERROR;
     }
 
     *target = malloc(target_len + 1);
     strncpy(*target, uib_text + *position, target_len);
-    *target[target_len] = '\0';
+    (*target)[target_len] = '\0';
     *position += target_len;
 
     return ULTK_SUCCESS;
@@ -144,7 +155,8 @@ ultk_uib_parse_string_after_len (
             uib_text,
             uib_text_len,
             position,
-            target_len, target
+            target_len,
+            target
         ) != ULTK_SUCCESS)
     {
         return ULTK_ERROR_UIB_ERROR;

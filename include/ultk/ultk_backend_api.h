@@ -1,8 +1,6 @@
 #ifndef _ULTK_BACKEND_API_H
 #define _ULTK_BACKEND_API_H
 
-#include "ultk/ultk_application.h"
-#include "ultk/ultk_canvas.h"
 #include <ultk/ultk.h>
 
 /* FUNCTIONS PROVIDED BY FRONTEND */
@@ -10,6 +8,7 @@
 ultk_return_t
 ultk_backend_callback_init (
     ultk_application_t **application,
+    void **application_data,
     void *backend_state,
     int argc,
     char **argv
@@ -18,18 +17,21 @@ ultk_backend_callback_init (
 ultk_return_t
 ultk_backend_callback_frame (
     ultk_application_t *application,
+    void *application_data,
     void *backend_state
 );
 
 ultk_return_t
 ultk_backend_callback_event (
     ultk_application_t *application,
+    void *application_data,
     void *backend_state
 );
 
 ultk_return_t
 ultk_backend_callback_quit (
     ultk_application_t *application,
+    void *application_data,
     void *backend_state
 );
 
@@ -75,33 +77,5 @@ ultk_backend_draw_line (
     ultk_color_index_t color_index,
     ultk_color_rgba_t color_rgba
 );
-
-
-/*
-ultk_return_t
-ultk_backend_initialize ();
-
-ultk_return_t
-ultk_backend_exit ();
-
-ultk_return_t
-ultk_backend_destroy_canvas (
-    ultk_canvas_id_t canvas_id
-);
-
-ultk_return_t
-ultk_backend_clear_canvas (
-    ultk_canvas_id_t canvas_id
-);
-
-
-*/
-
-/*
-ultk_return_t
-ultk_backend_query_input (
-    ultk_input_queue_t *input_queue
-);
-*/
 
 #endif

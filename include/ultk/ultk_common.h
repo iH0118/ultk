@@ -8,9 +8,12 @@ typedef enum ultk_return ultk_return_t;
 
 enum ultk_return {
     ULTK_SUCCESS                             =  0x00,
+    ULTK_EXIT_CALLBACK_SUCCESS               =  0x01,
+    ULTK_CONTINUE                            =  0x02,
     ULTK_ERROR_UNSPECIFIED                   = -0x01,
     ULTK_ERROR_ALLOCATION_FAILED             = -0x02,
     ULTK_ERROR_UIB_ERROR                     = -0x03,
+    ULTK_ERROR_CALLBACK_ERROR                = -0x04,
     ULTK_BACKEND_ERROR_UNSPECIFIED           = -0x1001,
     ULTK_BACKEND_ERROR_ALLOCATION_FAILED     = -0x1002,
     ULTK_BACKEND_ERROR_CANVAS_ALREADY_EXISTS = -0x1003,

@@ -1,8 +1,8 @@
 CC      := gcc
 LD      := ld
 UIDLC   := ../../util/uidlc/build/uidlc
-CFLAGS  := -I../../include -O -Wall -Wextra -Wno-unused-parameter -c
-LDFLAGS := -L../../build -lultk
+CFLAGS  := -I../../include -O -Wall -Wextra -Wno-unused-parameter -c $(if debug,-g,)
+LDFLAGS := -L../../build -lultk -lSDL3
 
 OUTPUT  := build/onebutton
 SRCS    := src/onebutton.c
@@ -17,7 +17,7 @@ clean_all: clean
 	rm -f $(OUTPUT)
 
 $(OUTPUT): $(OBJS)
-	$(LD) $(LDFLAGS) $^ -o $@
+	$(CC) $(LDFLAGS) $^ -o $@
 
 build/%.o: src/%.c
 	$(CC) $(CFLAGS) $< -o $@

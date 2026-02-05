@@ -8,9 +8,23 @@ ultk_return_t
 ultk_init_application_uib (
     const char *uib_text,
     unsigned int uib_text_len,
-    ultk_application_t *application
+    ultk_application_t **application
 )
 {
+    *application = malloc(sizeof(ultk_application_t));
+
+    if (*application == NULL)
+    {
+        return ULTK_ERROR_ALLOCATION_FAILED;
+    }
+
+    (*application)->metadata = malloc(sizeof(ultk_application_metadata_t));
+
+    if ((*application)->metadata == NULL)
+    {
+        return ULTK_ERROR_ALLOCATION_FAILED;
+    }
+
     if (uib_text_len < 7 || strncmp(uib_text, "UIB", 3))
     {
         return ULTK_ERROR_UIB_ERROR;
@@ -36,64 +50,69 @@ ultk_init_application_uib (
         uib_text,
         uib_text_len,
         &position,
-        &application->metadata->name
+        &(*application)->metadata->name
     );
 
     ultk_uib_parse_string_after_len(
         uib_text,
         uib_text_len,
         &position,
-        &application->metadata->version
+        &(*application)->metadata->version
     );
 
     ultk_uib_parse_string_after_len(
         uib_text,
         uib_text_len,
         &position,
-        &application->metadata->id
+        &(*application)->metadata->id
     );
 
     ultk_uib_parse_string_after_len(
         uib_text,
         uib_text_len,
         &position,
-        &application->metadata->creator
+        &(*application)->metadata->creator
     );
 
     ultk_uib_parse_string_after_len(
         uib_text,
         uib_text_len,
         &position,
-        &application->metadata->creator
+        &(*application)->metadata->creator
     );
 
     ultk_uib_parse_string_after_len(
         uib_text,
         uib_text_len,
         &position,
-        &application->metadata->url
+        &(*application)->metadata->url
     );
 
     ultk_uib_parse_uint16(
         uib_text,
         uib_text_len,
         &position,
-        &application->num_canvas
+        &(*application)->num_canvas
     );
 
-    application->canvas =
-        malloc(application->num_canvas * sizeof(ultk_canvas_t));
+    (*application)->canvas =
+        malloc((*application)->num_canvas * sizeof(ultk_canvas_t));
 
-    for (int i = 0; i < application->num_canvas; i++)
+    ultk_return_t status;
+
+    uint16_t i;
+    for (i = 0; i < (*application)->num_canvas; i++)
     {
-        if (ultk_create_canvas_uib(
-                uib_text,
-                uib_text_len,
-                &position,
-                &application->canvas[i]
-            ) != ULTK_SUCCESS)
+        status = ultk_create_canvas_uib(
+            uib_text,
+            uib_text_len,
+            &position,
+            &(*application)->canvas[i]
+        );
+
+        if (status != ULTK_SUCCESS)
         {
-            return ULTK_ERROR_UIB_ERROR;
+            return status;
         }
     }
 

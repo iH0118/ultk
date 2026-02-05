@@ -1,6 +1,7 @@
+#define SDL_MAIN_USE_CALLBACKS 1
+#include <SDL3/SDL_main.h>
 #include <stdlib.h>
 #include "backend.h"
-#include "ultk/ultk_backend_api.h"
 
 SDL_AppResult
 SDL_AppInit (
@@ -10,6 +11,7 @@ SDL_AppInit (
 )
 {
     *appstate = malloc(sizeof(ultk_backend_sdl3_appdata_t));
+    (*(ultk_backend_sdl3_appdata_t **)appstate)->num_canvas = 0;
 
     if (!*appstate)
     {
@@ -18,17 +20,28 @@ SDL_AppInit (
 
     ultk_return_t status = ultk_backend_callback_init(
         &(*(ultk_backend_sdl3_appdata_t **)appstate)->application,
+        &(*(ultk_backend_sdl3_appdata_t **)appstate)->application_data,
         *appstate,
         argc,
         argv
     );
-    
-    if (status != ULTK_SUCCESS)
+
+    switch (status)
     {
-        return SDL_APP_FAILURE;
+        case ULTK_SUCCESS:
+        case ULTK_EXIT_CALLBACK_SUCCESS:
+        return SDL_APP_SUCCESS;
+        break;
+
+        case ULTK_CONTINUE:
+        return SDL_APP_CONTINUE;
+        break;
+
+        default:
+        break;
     }
 
-    return SDL_APP_CONTINUE;
+    return SDL_APP_FAILURE;
 }
 
 SDL_AppResult
@@ -38,8 +51,11 @@ SDL_AppIterate (
 {
     ultk_backend_callback_frame(
         ((ultk_backend_sdl3_appdata_t *)appstate)->application,
+        ((ultk_backend_sdl3_appdata_t *)appstate)->application_data,
         appstate
     );
+
+    return SDL_APP_CONTINUE;
 }
 
 SDL_AppResult
@@ -56,28 +72,18 @@ SDL_AppQuit (
     SDL_AppResult result
 )
 {
-}
-/*
-ultk_return_t
-ultk_backend_initialize ()
-{
-    if ((
-        canvas_index = calloc(
-            _ULTK_BACKEND_MAX_CANVAS_COUNT,
-            sizeof(ultk_backend_sdl3_canvas_index_t) 
-        )
-    ))
-    {
-        return ULTK_SUCCESS;
-    }
-    
-    return ULTK_BACKEND_ERROR_INIT_ERROR;
-}
+    ultk_backend_callback_quit(
+        ((ultk_backend_sdl3_appdata_t *)appstate)->application,
+        ((ultk_backend_sdl3_appdata_t *)appstate)->application_data,
+        appstate
+    );
 
-ultk_return_t
-ultk_backend_exit ()
-{
-    free(canvas_index);
-    return ULTK_SUCCESS;
+    unsigned int i;
+    for (i = 0; i < ((ultk_backend_sdl3_appdata_t *)appstate)->num_canvas; i++)
+    {
+        ultk_backend_destroy_canvas(appstate, i);
+    }
+
+    free(((ultk_backend_sdl3_appdata_t *)appstate)->canvas);
+    free(appstate);
 }
-*/

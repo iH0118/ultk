@@ -12,4 +12,14 @@ ultk_create_widget_uib (
     ultk_widget_t *widget
 );
 
+ultk_return_t
+ultk_draw_widget (
+    ultk_widget_t *widget
+);
+
+ultk_return_t
+ultk_destroy_widget (
+    ultk_widget_t *widget
+);
+
 #endif

@@ -20,7 +20,7 @@ ultk_create_canvas_uib (
             position,
             &canvas_size
         ) != ULTK_SUCCESS ||
-        *position + canvas_size > uib_text_len)
+        initial_position + canvas_size > uib_text_len)
     {
         return ULTK_ERROR_UIB_ERROR;
     }
@@ -62,14 +62,19 @@ ultk_create_canvas_uib (
         &canvas->size.y
     );
 
-    canvas->widget_top = malloc (sizeof(ultk_widget_t));
+    canvas->widget_top = malloc(sizeof(ultk_widget_t));
 
-    ultk_create_widget_uib(
+    ultk_return_t status = ultk_create_widget_uib(
         uib_text,
         uib_text_len,
         position,
         canvas->widget_top
     );
+
+    if (status != ULTK_SUCCESS)
+    {
+        return status;
+    }
 
     if (*position - initial_position != canvas_size)
     {

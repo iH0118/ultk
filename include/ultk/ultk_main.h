@@ -10,7 +10,9 @@ ultk_callback_return_t
 ultk_callback_preinit (
     void **application_data,
     char **uib_text,
-    size_t *uib_text_len
+    size_t *uib_text_len,
+    int argc,
+    char **argv
 );
 
 ultk_callback_return_t
